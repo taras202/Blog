@@ -12,7 +12,6 @@ class Post extends Model
         'title',
         'avtor_id',
         'description',
-        'created_at'
     ];
 
     public function user()

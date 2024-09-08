@@ -12,7 +12,6 @@ class Comment extends Model
         'avtor_id',
         'post_id',
         'description',
-        'created_at'
     ];
 
     public function post()

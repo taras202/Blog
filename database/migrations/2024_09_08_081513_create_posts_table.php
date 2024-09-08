@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
-            $table->integer('avtor_id');
             $table->string('description');
+            $table->unsignedBigInteger('avtor_id');
+            $table->foreign('avtor_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
