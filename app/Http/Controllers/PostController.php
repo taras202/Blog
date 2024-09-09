@@ -4,9 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    public function authenticate(Request $request)
+    {
+        // Валідатор даних
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        // Спроба аутентифікації
+        if (Auth::attempt($credentials)) {
+            // Якщо аутентифікація успішна
+            $request->session()->regenerate();
+
+            // Перенаправлення на потрібну сторінку
+            return redirect()->intended('dashboard');
+        }
+
+        // Якщо аутентифікація не вдалася
+        return back()->withErrors([
+            'email' => 'Неправильний email або пароль.',
+        ])->onlyInput('email');
+    }
+
+
     public function index()
     {
         $posts = Post::all();

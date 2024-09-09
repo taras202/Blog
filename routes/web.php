@@ -3,9 +3,10 @@
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', function () {
+    return view('auth.login');
 });
 
-// CRUD маршрути для контролера PostController
-Route::resource('posts', PostController::class);
+Route::post('/login', [PostController::class, 'authenticate'])->name('login');
+
+Route::resource('posts', PostController::class)->middleware('auth');
