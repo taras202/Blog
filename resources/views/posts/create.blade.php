@@ -17,17 +17,11 @@
             @csrf
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" required>
-                @error('title')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+                <input type="text" name="title" id="title" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" class="form-control" rows="4" required>{{ old('description') }}</textarea>
-                @error('description')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+                <input type="text" name="description" id="description" class="form-control" required>
             </div>
            <button type="submit" class="btn btn-primary">Create</button>
             <a href="{{ route('posts.index') }}" class="btn btn-secondary">Back to List</a>
