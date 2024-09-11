@@ -19,4 +19,26 @@
         <a href="{{ route('posts.index') }}" class="btn btn-secondary">Back to List</a>
     </div>
 </div>
+<h4>Add a Comment</h4>
+<form action="{{ route('comments.store', $post) }}" method="POST">
+    @csrf
+    <div class="form-group">
+        <textarea name="description" class="form-control" rows="3" placeholder="Enter your comment"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Add Comment</button>
+</form>
+
+<h4>Comments</h4>
+@foreach($post->comments as $comment)
+    <p>{{ $comment->description }}</p>
+    <p>By: {{ $comment->user->name }} on {{ $comment->created_at->format('d M Y') }}</p>
+
+    <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-warning btn-sm">Edit</a>
+    <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+@endforeach
+
 @endsection
