@@ -43,22 +43,22 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
 {
-    $request->validate([
+    $validatedData = $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string',
-        'avtor_id' => 'required|exists:users,id',
     ]);
 
-    Post::create([
-        'title' => $request->title,
-        'description' => $request->description,
-        'avtor_id' => $request->avtor_id, 
+    $post = Post::create([
+        'title' => $validatedData['title'],
+        'description' => $validatedData['description'],
+        'avtor_id' => Auth::id(),
     ]);
 
-    return redirect()->route('posts.index');
+    return redirect()->route('posts.index')->with('success', 'Post created successfully.');
 }
+
 
     
     public function show(Post $post)

@@ -12,8 +12,9 @@
 </head>  
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h2>{{ $post->title }}</h2>
-        <p>{{ $post->description }}</p>
+    <div class="card-body">
+                <p><strong>Title:</strong> {{ $post->title }}</p>
+                <p><strong>Description:</strong> {{ $post->description }}</p>
         <p><strong>Author ID:</strong> {{ $post->avtor_id }}</p>
         <a href="{{ route('posts.index') }}" class="btn btn-secondary">Back to List</a>
     </div>

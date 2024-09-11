@@ -23,8 +23,8 @@
                 <label for="description" class="form-label">Description</label>
                 <input type="text" name="description" id="description" class="form-control" required>
             </div>
-           <button type="submit" class="btn btn-primary">Create</button>
-            <a href="{{ route('posts.index') }}" class="btn btn-secondary">Back to List</a>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{{ route('posts.index') }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </div>
