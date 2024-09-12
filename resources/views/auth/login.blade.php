@@ -25,8 +25,8 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+            <a href="{{ route('posts.index') }}" class="btn btn-secondary">Login</a>
+            </form>
     </div>
 </body>
 </html>

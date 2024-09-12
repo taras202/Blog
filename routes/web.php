@@ -22,5 +22,7 @@ Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
 Route::get('/choose', [RegisterController::class, 'show'])->name('choose');
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+
 
 
