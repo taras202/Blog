@@ -36,12 +36,14 @@
                                         <td>{{ Str::limit($post->description, 50) }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info btn-sm me-2">View</a>
-                                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm me-2">Edit</a>
-                                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                            </form>
+                                            @if($post->avtor_id === auth()->id())
+                                                <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm me-2">Edit</a>
+                                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
