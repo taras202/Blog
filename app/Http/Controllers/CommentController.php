@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    // Збереження нового коментаря
     public function store(Request $request, Post $post)
     {
         $validatedData = $request->validate([
@@ -25,13 +24,11 @@ class CommentController extends Controller
         return redirect()->route('posts.show', $post)->with('success', 'Comment added successfully.');
     }
 
-    // Форма для редагування коментаря
     public function edit(Comment $comment)
     {
         return view('comments.edit', compact('comment'));
     }
 
-    // Оновлення коментаря
     public function update(Request $request, Comment $comment)
     {
         $validatedData = $request->validate([
@@ -43,7 +40,6 @@ class CommentController extends Controller
         return redirect()->route('posts.show', $comment->post)->with('success', 'Comment updated successfully.');
     }
 
-    // Видалення коментаря
     public function destroy(Comment $comment)
     {
         $comment->delete();

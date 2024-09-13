@@ -10,22 +10,17 @@ class PostController extends Controller
 {
     public function authenticate(Request $request)
     {
-        // Валідатор даних
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // Спроба аутентифікації
         if (Auth::attempt($credentials)) {
-            // Якщо аутентифікація успішна
             $request->session()->regenerate();
 
-            // Перенаправлення на потрібну сторінку
             return redirect()->intended('dashboard');
         }
 
-        // Якщо аутентифікація не вдалася
         return back()->withErrors([
             'email' => 'Неправильний email або пароль.',
         ])->onlyInput('email');
@@ -70,7 +65,6 @@ class PostController extends Controller
 {
     $post = Post::findOrFail($id);
 
-    // Перевірка, чи користувач є власником поста
     if ($post->avtor_id !== auth()->id()) {
         abort(403, 'Unauthorized action.');
     }
@@ -82,12 +76,10 @@ public function update(Request $request, $id)
 {
     $post = Post::findOrFail($id);
 
-    // Перевірка, чи користувач є власником поста
     if ($post->avtor_id !== auth()->id()) {
         abort(403, 'Unauthorized action.');
     }
 
-    // Валідація та оновлення поста
     $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string',
@@ -102,7 +94,6 @@ public function destroy($id)
 {
     $post = Post::findOrFail($id);
 
-    // Перевірка, чи користувач є власником поста
     if ($post->avtor_id !== auth()->id()) {
         abort(403, 'Unauthorized action.');
     }
