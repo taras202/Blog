@@ -23,9 +23,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('posts.create') }}">Create Post</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('choose') }}">Register or authenticate</a>
-                    </li>
+                    @if(auth()->check())
+                        <li class="nav-item">
+                            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-link nav-link">Logout</button>
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('choose') }}">Register or Authenticate</a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>

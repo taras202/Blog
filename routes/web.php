@@ -11,6 +11,11 @@ Route::get('/login', function () {
 });
 
 Route::post('/login', [PostController::class, 'authenticate'])->name('login');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/choose');
+})->name('logout');
+
 
 Route::resource('posts', PostController::class)->middleware('auth');
 
