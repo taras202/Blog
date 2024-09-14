@@ -4,6 +4,7 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RegisterController;
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/login', function () {
