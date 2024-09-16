@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreCommentRequest;
 
 class CommentController extends Controller
 {
@@ -29,16 +30,13 @@ class CommentController extends Controller
         return view('comments.edit', compact('comment'));
     }
 
-    public function update(Request $request, Comment $comment)
+    public function update(StoreCommentRequest $request, Comment $comment) // Використовуємо той самий запит
     {
-        $validatedData = $request->validate([
-            'description' => 'required|string|max:255',
-        ]);
-
-        $comment->update($validatedData);
+        $comment->update($request->validated());
 
         return redirect()->route('posts.show', $comment->post)->with('success', 'Comment updated successfully.');
     }
+
 
     public function destroy(Comment $comment)
     {

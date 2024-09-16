@@ -3,103 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function authenticate(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        Post::create([
+            'title' => $request->validated()['title'],
+            'description' => $request->validated()['description'],
+            'avtor_id' => Auth::id(),
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+    }
 
-            return redirect()->intended(route('posts.index'));
+    public function update(UpdatePostRequest $request, $id)
+    {
+        $post = Post::findOrFail($id);
+
+        if ($post->avtor_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
         }
 
-        return back()->withErrors([
-            'email' => 'Неправильний email або пароль.',
-        ])->onlyInput('email');
+        $post->update($request->validated());
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
-
-
-    public function index()
-    {
-        $posts = Post::all();
-        return view('posts.index', compact('posts'));
-    }
-
-    public function create()
-    {
-        return view('posts.create');
-    }
-
-    public function store(Request $request, Post $post)
-{
-    $validatedData = $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-    ]);
-
-    $post = Post::create([
-        'title' => $validatedData['title'],
-        'description' => $validatedData['description'],
-        'avtor_id' => Auth::id(),
-    ]);
-
-    return redirect()->route('posts.index')->with('success', 'Post created successfully.');
-}
-
-
-    
-    public function show(Post $post)
-    {
-        return view('posts.show', compact('post'));
-    }
-
-    public function edit($id)
-{
-    $post = Post::findOrFail($id);
-
-    if ($post->avtor_id !== auth()->id()) {
-        abort(403, 'Unauthorized action.');
-    }
-
-    return view('posts.edit', compact('post'));
-}
-
-public function update(Request $request, $id)
-{
-    $post = Post::findOrFail($id);
-
-    if ($post->avtor_id !== auth()->id()) {
-        abort(403, 'Unauthorized action.');
-    }
-
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-    ]);
-
-    $post->update($request->only('title', 'description'));
-
-    return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
-}
-
-public function destroy($id)
-{
-    $post = Post::findOrFail($id);
-
-    if ($post->avtor_id !== auth()->id()) {
-        abort(403, 'Unauthorized action.');
-    }
-
-    $post->delete();
-
-    return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
-}
 }
