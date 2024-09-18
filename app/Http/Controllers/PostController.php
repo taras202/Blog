@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    public function index()
+    {
+        $posts = Post::all();
+        return view('posts.index', compact('posts'));
+    }
+    public function create()
+    {
+        return view('posts.create');
+    }
     public function store(StorePostRequest $request)
     {
         Post::create([
@@ -19,11 +28,20 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
-
-    public function update(UpdatePostRequest $request, $id)
+    public function show(Post $post)
     {
-        $post = Post::findOrFail($id);
+        return view('posts.show', compact('post'));
+    }
+    public function edit(Post $post)
+    {
+        if ($post->avtor_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
+        return view('posts.edit', compact('post'));
+    }
+    public function update(UpdatePostRequest $request, Post $post)
+    {
         if ($post->avtor_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -32,5 +50,4 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
-    
 }

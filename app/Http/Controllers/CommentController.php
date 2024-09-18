@@ -10,34 +10,26 @@ use App\Http\Requests\StoreCommentRequest;
 
 class CommentController extends Controller
 {
-    public function store(Request $request, Post $post)
+    public function store(StoreCommentRequest $request, Post $post)
     {
-        $validatedData = $request->validate([
-            'description' => 'required|string|max:255',
-        ]);
-
         Comment::create([
-            'description' => $validatedData['description'],
+            'description' => $request->validated()['description'],
             'avtor_id' => Auth::id(),
             'post_id' => $post->id,
         ]);
 
         return redirect()->route('posts.show', $post)->with('success', 'Comment added successfully.');
     }
-
     public function edit(Comment $comment)
     {
         return view('comments.edit', compact('comment'));
     }
-
-    public function update(StoreCommentRequest $request, Comment $comment) // Використовуємо той самий запит
+    public function update(StoreCommentRequest $request, Comment $comment)
     {
         $comment->update($request->validated());
 
         return redirect()->route('posts.show', $comment->post)->with('success', 'Comment updated successfully.');
     }
-
-
     public function destroy(Comment $comment)
     {
         $comment->delete();
